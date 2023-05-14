@@ -37,6 +37,21 @@ Some requirements:
 - Write tests for the route that will ensure that it correctly validates the incoming request and uses the model method properly.
 - Document all new code here clearly; this is functionality that future team members should be able to understand how to use from your docstrings.
 
+## Part Three: Change Authorization
+
+### Companies
+
+Retrieving the list of companies or information about a company should remain open to everyone, including anonymous users. Creating, updating, and deleting companies should only be possible for users who logged in with an account that has the is_admin flag in the database.
+
+Find a way to do this where you don’t need to change the code of these routes, and where you don’t need to SELECT information about the user on every request, but that the authentication credentials provided by the user can contain information suitable for this requirement. Update tests to demonstrate that these security changes are working.
+
+### Users
+
+Creating users should only permitted by admins (registration, however, should remain open to everyone). Getting the list of all users should only be permitted by admins. Getting information on a user, updating, or deleting a user should only be permitted either by an admin, or by that user.
+
+As before, write tests for this carefully.
+
+
 
 This is the Express backend for Jobly, version 2.
 
