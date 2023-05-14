@@ -39,33 +39,44 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 	}
 });
 
-/** GET /  =>
+/** GET /companies =>
  *   { companies: [ { handle, name, description, numEmployees, logoUrl }, ...] }
  *
- * Can filter on provided search filters:
- * - minEmployees
- * - maxEmployees
- * - nameLike (will find case-insensitive, partial matches)
+ * Search filters:
+ * - name (find by company name, case-insensitive, partial matches)
+ * - minEmployees (find companies with at least that number of employees)
+ * - maxEmployees (find companies with no more than that number of employees)
  *
  * Authorization required: none
  */
 
 router.get("/", async function (req, res, next) {
-	const q = req.query;
-	// arrive as strings from querystring, but we want as ints
-	if (q.minEmployees !== undefined) q.minEmployees = +q.minEmployees;
-	if (q.maxEmployees !== undefined) q.maxEmployees = +q.maxEmployees;
-
 	try {
-		const validator = jsonschema.validate(q, companySearchSchema);
+		// Get the query parameters from the request
+		const { name, minEmployees, maxEmployees } = req.query;
+
+		// Convert minEmployees and maxEmployees to integers
+		const query = {
+			name,
+			minEmployees: minEmployees && parseInt(minEmployees),
+			maxEmployees: maxEmployees && parseInt(maxEmployees),
+		};
+
+		// Validate the query against the company search schema
+		const validator = jsonschema.validate(query, companySearchSchema);
 		if (!validator.valid) {
-			const errs = validator.errors.map((e) => e.stack);
-			throw new BadRequestError(errs);
+			// If the query is not valid, throw a BadRequestError with the validation errors
+			const errors = validator.errors.map((e) => e.stack);
+			throw new BadRequestError(errors);
 		}
 
-		const companies = await Company.findAll(q);
+		// Find companies matching the query
+		const companies = await Company.findAll(query);
+
+		// Return the list of companies as a JSON response
 		return res.json({ companies });
 	} catch (err) {
+		// Pass any errors to the error handler middleware
 		return next(err);
 	}
 });
