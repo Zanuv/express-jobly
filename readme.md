@@ -81,21 +81,6 @@ Write comprehensive tests for this, and document this feature well.
 
 Now that the app includes jobs, change the GET /companies/:handle feature so that it includes all of the information about the jobs associated with that company:
 
-```json
-{ 
-  ... other data ... , 
-  jobs: [ 
-    { 
-      id, 
-      title, 
-      salary, 
-      equity
-    }, 
-    ...
-  ] 
-}
-
-
 
 This is the Express backend for Jobly, version 2.
 
