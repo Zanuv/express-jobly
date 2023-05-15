@@ -51,6 +51,50 @@ Creating users should only permitted by admins (registration, however, should re
 
 As before, write tests for this carefully.
 
+## Part Four: Jobs
+
+Add a feature for jobs to the application.
+
+### Research!
+
+Our database uses the NUMERIC field type. Do some research on why we chose this, rather than a FLOAT type. Discover what the pg library returns when that field type is queried, and form a theory on why.
+
+### Adding Job Model, Routes, and Tests
+
+- Add a model for jobs — you can pattern-match this from the companies model.
+- Updating a job should never change the ID of a job, nor the company associated with a job.
+- Write tests for the model.
+- Add routes for jobs. The same routes should be handled as we did for companies (for now, omit the special filtering on the GET / route), with the same security requirements (anyone can get the jobs, but only admins can add, update, or delete them). Make sure you suitably validate incoming data.
+- Write tests for the routes.
+
+### Adding Filtering
+
+Similar to the companies filtering for the GET / route, add filtering for jobs for the following possible filters:
+
+- title: filter by job title. Like before, this should be a case-insensitive, matches-any-part-of-string search.
+- minSalary: filter to jobs with at least that salary.
+- hasEquity: if true, filter to jobs that provide a non-zero amount of equity. If false or not included in the filtering, list all jobs regardless of equity.
+
+Write comprehensive tests for this, and document this feature well.
+
+### Show Jobs for a Company
+
+Now that the app includes jobs, change the GET /companies/:handle feature so that it includes all of the information about the jobs associated with that company:
+
+```json
+{ 
+  ... other data ... , 
+  jobs: [ 
+    { 
+      id, 
+      title, 
+      salary, 
+      equity
+    }, 
+    ...
+  ] 
+}
+
 
 
 This is the Express backend for Jobly, version 2.
