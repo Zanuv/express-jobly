@@ -82,6 +82,18 @@ Write comprehensive tests for this, and document this feature well.
 Now that the app includes jobs, change the GET /companies/:handle feature so that it includes all of the information about the jobs associated with that company:
 
 
+## Step Five: Job Applications
+
+We’ve provided a table for applications. Incorporate this into the app by adding a method onto the User model, allowing users to apply for a job.
+
+Add a route at POST /users/:username/jobs/:id that allows that user to apply for a job (or an admin to do it for them). That route should return JSON like:
+
+{ applied: jobId }
+Change the output of the get-all-info methods and routes for users so those include the a field with a simple list of job IDs the user has applied for:
+
+{ ..., jobs: [ jobId, jobId, ... ] }
+Document this carefully and write tests.
+
 This is the Express backend for Jobly, version 2.
 
 To run this:
